@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import com.lakin.msu.criminalintent.databinding.FragmentCrimeDetailBinding
-import java.util.Date
-import java.util.UUID
+import java.util.*
+
 
 class CrimeDetailFragment: Fragment() {
-    private lateinit var crime: Crime
+    lateinit var crime: Crime
     private var _binding: FragmentCrimeDetailBinding? = null
 
             private val binding
@@ -52,7 +52,7 @@ class CrimeDetailFragment: Fragment() {
             // listener for button
             crimeDate.apply {
                 text = crime.date.toString()
-                isEnabled = false
+                 isEnabled = false
             }
 
             crimeSolved.setOnCheckedChangeListener{_, isChecked ->
@@ -63,9 +63,13 @@ class CrimeDetailFragment: Fragment() {
 
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     override fun onDestroy() {
         super.onDestroy()
-        //binding = null
         _binding = null
     }
 }
