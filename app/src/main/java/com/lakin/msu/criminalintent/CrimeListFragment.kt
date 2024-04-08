@@ -33,10 +33,15 @@ class CrimeListFragment: Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentCrimeListBinding.inflate(layoutInflater, container, false)
 
         binding.crimeRecyclerView.layoutManager = LinearLayoutManager(context)
+
+        val crimes = crimeListViewModel.crimes
+        val adapter = CrimeListAdapter(crimes)
+        binding.crimeRecyclerView.adapter = adapter
+
         return binding.root
     }
 
