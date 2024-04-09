@@ -11,7 +11,7 @@ import java.util.*
 
 
 class CrimeDetailFragment: Fragment() {
-    lateinit var crime: Crime
+    private lateinit var crime: Crime
     private var _binding: FragmentCrimeDetailBinding? = null
 
             private val binding
@@ -55,7 +55,7 @@ class CrimeDetailFragment: Fragment() {
                  isEnabled = false
             }
 
-            crimeSolved.setOnCheckedChangeListener{_, isChecked ->
+            crimeSolved.setOnCheckedChangeListener{_,isChecked ->
             crime = crime.copy(isSolved = isChecked)
             }
         }

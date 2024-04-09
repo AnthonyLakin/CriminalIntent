@@ -1,5 +1,6 @@
 package com.lakin.msu.criminalintent
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import java.util.*
 
@@ -14,8 +15,8 @@ class CrimeListViewModel: ViewModel() {
                 isSolved = i % 2 == 0
 
             )
-
             crimes += crime
         }
     }
+
 }
