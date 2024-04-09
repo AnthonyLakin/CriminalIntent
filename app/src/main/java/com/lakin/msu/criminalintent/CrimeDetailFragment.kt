@@ -25,7 +25,7 @@ class CrimeDetailFragment: Fragment() {
         crime = Crime(
             UUID.randomUUID(),
             title = "",
-            date = Date(),
+            date = CrimeListViewModel.formatDate(Date()),
             isSolved = false
         )
     }

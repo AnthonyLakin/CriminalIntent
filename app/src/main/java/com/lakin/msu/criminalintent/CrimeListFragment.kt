@@ -13,6 +13,7 @@ import com.lakin.msu.criminalintent.databinding.FragmentCrimeDetailBinding
 import com.lakin.msu.criminalintent.databinding.FragmentCrimeListBinding
 
 private const val TAG = "CrimeListFragment"
+
 class CrimeListFragment: Fragment() {
 
     private val crimeListViewModel: CrimeListViewModel by viewModels()
