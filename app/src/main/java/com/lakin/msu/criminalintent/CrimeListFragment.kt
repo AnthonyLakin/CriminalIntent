@@ -1,5 +1,6 @@
 package com.lakin.msu.criminalintent
 
+import CrimeListAdapter
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater

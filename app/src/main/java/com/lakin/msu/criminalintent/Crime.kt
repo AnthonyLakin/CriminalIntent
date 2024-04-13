@@ -8,5 +8,6 @@ data class Crime(
     val title: String,
     val date: String = CrimeListViewModel.formatDate(Date()),
     val isSolved: Boolean,
+    val requiresPolice: Boolean
 )
 

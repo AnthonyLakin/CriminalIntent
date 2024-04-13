@@ -1,18 +1,49 @@
-package com.lakin.msu.criminalintent
-
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.lakin.msu.criminalintent.Crime
+import com.lakin.msu.criminalintent.databinding.ItemListCrimePoliceBinding
 import com.lakin.msu.criminalintent.databinding.ListItemCrimeBinding
 
 private const val TAG = "CrimeListAdapter"
+private const val ViewTypeNormal = 0
+private const val ViewTypePolice = 1
 
-class CrimeHolder(
-    private val binding: ListItemCrimeBinding
-): RecyclerView.ViewHolder(binding.root) {
+class CrimeListAdapter(private val crimes: List<Crime>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        return when (viewType) {
+            ViewTypeNormal -> {
+                val binding = ListItemCrimeBinding.inflate(inflater, parent, false)
+                CrimeHolder(binding)
+            }
+            ViewTypePolice -> {
+                val binding = ItemListCrimePoliceBinding.inflate(inflater, parent, false)
+                PoliceCrimeHolder(binding)
+            }
+            else -> throw IllegalArgumentException("Invalid view type")
+        }
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val crime = crimes[position]
+        when (holder) {
+            is CrimeHolder -> holder.bind(crime)
+            is PoliceCrimeHolder -> holder.bind(crime)
+        }
+    }
+
+    override fun getItemCount() = crimes.size
+
+    override fun getItemViewType(type: Int): Int {
+        return if (crimes[type].requiresPolice) ViewTypePolice else ViewTypeNormal
+    }
+}
+
+class CrimeHolder(private val binding: ListItemCrimeBinding) : RecyclerView.ViewHolder(binding.root) {
     fun bind(crime: Crime) {
         binding.crimeTitle.text = crime.title
         binding.crimeDate.text = crime.date.toString()
@@ -33,28 +64,23 @@ class CrimeHolder(
     }
 }
 
+class PoliceCrimeHolder(private val binding: ItemListCrimePoliceBinding) : RecyclerView.ViewHolder(binding.root) {
+    fun bind(crime: Crime) {
+        binding.crimeTitle.text = crime.title
+        binding.crimeDate.text = crime.date.toString()
 
-class CrimeListAdapter(
-    private val crimes: List<Crime>
-) : RecyclerView.Adapter<CrimeHolder>() {
+        binding.root.setOnClickListener {
+            Toast.makeText(
+                binding.root.context,
+                "${crime.title} clicked!",
+                Toast.LENGTH_SHORT
+            ).show()
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ) : CrimeHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val binding = ListItemCrimeBinding.inflate(inflater, parent, false)
-        return CrimeHolder(binding)
+        }
+        binding.crimeSolved.visibility = if (crime.isSolved) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
     }
-
-
-    override fun onBindViewHolder(holder: CrimeHolder, position: Int) {
-        val crime = crimes[position]
-        holder.bind(crime)
-    }
-
-    override fun getItemCount() = crimes.size
-
-
 }
-
