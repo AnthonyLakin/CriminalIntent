@@ -48,13 +48,11 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("junit:junit:4.13.2")
     implementation("androidx.test.ext:junit-ktx:1.1.5")
-// Removed TestNG - if you're not using it for Android-specific testing, it's not necessary
+    implementation("androidx.test:runner:1.5.2")
     debugImplementation("androidx.fragment:fragment-testing:1.6.2")
 
-// For local unit tests
     testImplementation("junit:junit:4.13.2")
 
-// For Android Instrumented tests
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
