@@ -4,13 +4,18 @@ import android.content.Context
 import android.util.Log
 import androidx.room.Room
 import com.lakin.msu.criminalintent.database.CrimeDatabase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 import java.util.UUID
 
 private const val DATABASE_NAME = "crime-database"
-private const val TAG = "CrimeRepository"
 
-class CrimeRepository private constructor(context: Context){
+class CrimeRepository private constructor(
+    context: Context,
+    private val coroutineScope: CoroutineScope = GlobalScope
+) {
 
     private val database: CrimeDatabase = Room
         .databaseBuilder(
@@ -19,16 +24,17 @@ class CrimeRepository private constructor(context: Context){
             DATABASE_NAME
         )
         .createFromAsset(DATABASE_NAME)
-        .fallbackToDestructiveMigration()
         .build()
-
 
     fun getCrimes(): Flow<List<Crime>> = database.crimeDao().getCrimes()
 
-    suspend fun getCrime(id: UUID): Crime {
-        return database.crimeDao().getCrime(id)
-    }
+    suspend fun getCrime(id: UUID): Crime = database.crimeDao().getCrime(id)
 
+    fun updateCrime(crime: Crime) {
+        coroutineScope.launch {
+            database.crimeDao().updateCrime(crime)
+        }
+    }
 
     companion object {
         private var INSTANCE: CrimeRepository? = null
@@ -40,9 +46,8 @@ class CrimeRepository private constructor(context: Context){
         }
 
         fun get(): CrimeRepository {
-            //Log.d(TAG, INSTANCE.toString())
-            return INSTANCE ?:
-            throw IllegalStateException("CrimeRepository must be initialized")
+            return INSTANCE
+                ?: throw IllegalStateException("CrimeRepository must be initialized")
         }
     }
 }
