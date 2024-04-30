@@ -5,6 +5,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -90,6 +92,21 @@ class CrimeDetailFragment : Fragment() {
                 }
             }
         }
+
+        // OnBackPressedCallback overrides the back navigation
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (binding.crimeTitle.text.toString().isEmpty()) {
+                    Toast.makeText(context, "Please fill out a crime description before exiting.", Toast.LENGTH_SHORT).show()
+                } else {
+                    // Removes the callback and handle back navigation normally
+                    isEnabled = false
+                    requireActivity().onBackPressed()
+                    isEnabled = true // navigation is intercepted by the callback
+                }
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
 
     override fun onDestroyView() {
