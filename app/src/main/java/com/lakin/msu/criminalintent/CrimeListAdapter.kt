@@ -39,6 +39,7 @@ class CrimeListAdapter(
         parent: ViewGroup,
         viewType: Int
     ): CrimeHolder {
+        // Creates the view
         val inflater = LayoutInflater.from(parent.context)
         val binding = ListItemCrimeBinding.inflate(inflater, parent, false)
         return CrimeHolder(binding)
